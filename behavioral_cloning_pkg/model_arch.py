@@ -4,7 +4,6 @@ from keras.applications.inception_v3 import InceptionV3
 
 from keras.models import Sequential, Model
 from keras.layers import Input, Cropping2D, Dense, Flatten, Lambda, GlobalAveragePooling2D, Conv2D, Dropout, Concatenate
-import cv2
 
 
 def expand_InceptionV3_01():   
@@ -50,14 +49,14 @@ def nvidia():
     print('Model - nvidia')
     inp = Input(shape=(160,320,3))
     # crop the image, im cropping less because im using images from the track 2 with slopes
-    crop = Cropping2D(cropping=((30,20), (0,0)))(inp)
+    crop = Cropping2D(cropping=((50,20), (0,0)))(inp)
     # convert to yuv colour scheme
-    def hsv_conversion(x):   
-        return tf.image.rgb_to_hsv(x)
+    #def hsv_conversion(x):
+        #return tf.image.rgb_to_yuv(x)
     
-    yuv = Lambda(hsv_conversion)(crop)
+    #yuv = Lambda(hsv_conversion)(crop)
     # normalize
-    norm = Lambda(lambda x: (x / 127.5) - 1.0)(yuv)
+    norm = Lambda(lambda x: (x / 127.5) - 1.0)(crop)
     
     x = Conv2D(24, (5, 5), strides=(2, 2), activation="relu", padding="valid")(norm)
     x = Conv2D(36, (5, 5), strides=(2, 2), activation="relu", padding="valid")(x)
@@ -88,8 +87,7 @@ def double_nvidia():
     # crop the image, im cropping less because im using images from the track 2 with slopes
     crop = Cropping2D(cropping=((30,20), (0,0)), name='crop')(inp)
     # convert to yuv colour scheme
-    def hsv_conversion(x):
-        import tensorflow as tf    
+    def hsv_conversion(x): 
         return tf.image.rgb_to_hsv(x)
     
     yuv = Lambda(hsv_conversion, name='yuv')(crop)

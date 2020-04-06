@@ -12,27 +12,27 @@ if __name__ == '__main__':
     
     program = {'train': True,
                'load_model': False,
-               'model_path': './saved_models/double_nvidia_1586181351.h5',
+               'model_path': './saved_models/nvidia_1586195186.h5',
                'load_data': False,
                'data_path': './data.p'}
                
     
     params = {'model_name': 'nvidia',
               'batch_size': 250,
-              'epochs': 8,
+              'epochs': 5,
               'loss': 'mse',
               'optimizer': 'adam',
               'verbose': 1}
     
     params['callbacks'] = [ModelCheckpoint('./saved_models/'+params['model_name']+'_ckeckpoint.h5',
-                                           monitor='val_acc',
+                                           monitor='val_loss',
                                            verbose=1,
                                            save_best_only=False,
                                            save_weights_only=False,
                                            mode='auto',
                                            period=1),
-                          EarlyStopping(monitor='val_acc',
-                                        min_delta=0.03,
+                          EarlyStopping(monitor='val_loss',
+                                        min_delta=0.0005,
                                         patience=2,
                                         verbose=1,
                                         mode='auto',
