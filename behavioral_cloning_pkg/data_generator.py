@@ -73,4 +73,8 @@ if __name__ == '__main__':
         epoch = valid[i]
         print('epoch[0].shape: ', epoch[0].shape)
         print('epoch[1].shape: ', epoch[1].shape)
+<<<<<<< HEAD
     
+=======
+    
+>>>>>>> c70989b47b0e69db88dba746966f0c887c4b70b8
