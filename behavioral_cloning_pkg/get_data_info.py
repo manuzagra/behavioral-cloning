@@ -3,9 +3,13 @@ import csv
 
 
 def get_data_info(path):
-    parent = pathlib.Path(path)
-    
+    """
+    Get metadata of the iamges.
+    """
+
     samples = []
+    # the data is in subfolders
+    parent = pathlib.Path(path)
     for csv_file in parent.glob('**/*.csv'):
         with open(str(csv_file), 'r') as f:
             reader = csv.reader(f)
@@ -24,9 +28,12 @@ def get_data_info(path):
 
 
 def get_field_as_list(data, field):
+    """
+    It returns a list containing just one field of the metadata
+    """
     return [x[field] for x in data]
-    
-                      
+
+
 if __name__ == '__main__':
 
     import utils

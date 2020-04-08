@@ -2,7 +2,11 @@ import time
 import json
 
 def train(model, train_data_gen, valid_data_gen, **kwargs):
+    """
+    Train and save a model
+    """
     print('Training model...')
+    # compile the model qith the given optimizer and loss
     model.compile(loss=kwargs.get('loss', 'mse'), optimizer=kwargs.get('optimizer', 'adam'), metrics=['accuracy'])
     # https://keras.io/models/model/#fit_generator
     hist = model.fit_generator(train_data_gen,
@@ -16,14 +20,16 @@ def train(model, train_data_gen, valid_data_gen, **kwargs):
                         workers=1,
                         use_multiprocessing=False,
                         shuffle=False)
-    
+    # save the model afer training
     if kwargs.get('model_name'):
         fname = kwargs.get('model_name') + '_' + str(int(time.time())) + '.h5'
     else:
         fname = 'model_' + str(int(time.time())) + '.h5'
     model.save('saved_models/' + fname)
     print('Model saved as: ' + fname)
-    
+
+    # save the training hyper parameters and the metrics
+    # it can be usefull to choose the best model and the best hyper parameters
     with open('saved_models/' + fname + '.txt', 'w') as f:
         for key, value in kwargs.items():
             if key is not 'callbacks':
@@ -33,5 +39,5 @@ def train(model, train_data_gen, valid_data_gen, **kwargs):
         f.write('\n--------------------------------------------\n')
         for key, value in hist.history.items():
             f.write(key + ' = ' + str(value) + '\n')
-    
+
     return hist
